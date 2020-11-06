@@ -1,33 +1,106 @@
-const { ApolloServer, gql } = require('apollo-server');
 
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
+const { ApolloServer, gql } = require('./server/node_modules/apollo-server');
+
 const typeDefs = gql`
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
+    # https://www.apollographql.com/docs/apollo-server/schema/scalars-enums/#date-as-a-scalar
+    scalar Date
 
-  # This "Book" type defines the queryable fields for every book in our data source.
-  type Book {
-    title: String
-    author: String
-  }
+    type Quiz {
+        quizId: ID!
+        name: String!
+        show: Show
+        genre: String
+        questions: [Question]!
+    }
+    
+    type Question {
+        questionId: ID!
+        quiz: Quiz!
+      question: String!
+      answer: String!
+      options: [String]
+    }
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
-  type Query {
-    books: [Book]
-  }
+    type Attempt {
+        attemptId: ID!
+        quiz: Quiz!
+        user: User!
+        score: Score!
+        message: ResultMessage
+        createdAt: Date!
+        submitted: Boolean!
+    }
+
+    enum ResultMessage { 
+        FAIL
+        MARGINAL
+        SATISFACTORY
+        GOOD
+        VERYGOOD
+        PERFECT
+    }
+
+    type Score {
+     pointsEarned: Int!
+     total: Int!
+    }
+
+    type Show {
+      showId: ID!
+      name: String!
+      genre: String
+    }
+
+    type User {
+        userId: ID!
+        email: String!
+        password: String!
+        quizzesOwned: [Quiz]!
+        quizzesTaken: [Attempt]!
+        shows: [Show]!
+        showsToReview: [Show]!
+        admin: Boolean!
+    }
+
+    type Query {
+        quizzes(name: String, genre: String): [Quiz]!
+        quiz(id: ID!): Quiz
+        show(id: ID!): Show
+        shows(name: String, genre: String): [Show]!
+        attempt(attemptId: ID!): Attempt
+        me: User
+    }
+    
+    type Mutation {
+        createQuiz(name: String!, showId: ID, genre: String): Quiz
+        deleteQuiz(quizId: ID!): Quiz
+        modifyQuizInfo(quizId: ID!, name: String, showId: ID, genre: String): Quiz
+        addQuestion(quizId: ID!, question: String!, answer: String!, options: [String]!): Question
+        modifyQuestion(quizId: ID!, questionId: ID!, question: String!, answer: String!, options: [String]!): Question
+        removeQuestion(questionId: ID!): Question
+        addShow(showId: ID!, userId: ID!): User
+        removeShow(showId: ID!, userId: ID!): User
+        createShow(name: String!, genre: String): Show
+        deleteShow(showId: ID!): Show
+        startAttempt(quizId: ID!, userId: ID!): Attempt
+        updateAttempt(attemptId: ID!, questionId: ID!, userAnswer: String!): Attempt
+        submitAttempt(attemptId: ID!): Attempt
+        login(email: String): String # login token
+    }
+      
+  
 `;
 
-const books = [
+const shows = [
   {
-    title: 'The Awakening',
-    author: 'Kate Chopin',
+    showId: 1,
+    name: "The Office",
+    genre: "Michael Scott",
   },
   {
-    title: 'City of Glass',
-    author: 'Paul Auster',
+    showId: 2,
+    name: "One Piece",
+    genre: "anime",
   },
 ];
 
@@ -35,7 +108,7 @@ const books = [
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    books: () => books,
+    shows: () => shows,
   },
 };
 
@@ -47,3 +120,6 @@ const server = new ApolloServer({ typeDefs, resolvers });
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
 });
+
+
+
