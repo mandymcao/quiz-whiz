@@ -1,37 +1,27 @@
 
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 const { createStore } = require('./utils');
+const resolvers = require('./resolvers');
 
-const shows = [
-  {
-    showId: 1,
-    name: "The Office",
-    genre: "Michael Scott",
-  },
-  {
-    showId: 2,
-    name: "One Piece",
-    genre: "anime",
-  },
-];
+var mongoose = require('mongoose');
 
-// Resolvers define the technique for fetching the types defined in the
-// schema. This resolver retrieves books from the "books" array above.
-const resolvers = {
-  Query: {
-    shows: () => shows,
-  },
-};
+const startServer = async() => {
+  // The ApolloServer constructor requires two parameters: your schema
+  // definition and your set of resolvers.
+  const server = new ApolloServer({ typeDefs, resolvers });
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
-const server = new ApolloServer({ typeDefs, resolvers });
+  await mongoose.connect('mongodb://localhost/test5', { 
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 
-// The `listen` method launches a web server.
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+  // The `listen` method launches a web server.
+  server.listen().then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+  });
 
+}
 
+startServer();
 
