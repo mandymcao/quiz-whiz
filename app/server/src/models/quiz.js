@@ -14,6 +14,14 @@ var quizSchema = new mongoose.Schema({
   questionIds: {
     type: [mongoose.Schema.Types.ObjectId],
     default: []
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   }
 });
 var Quiz = mongoose.model('Quiz', quizSchema);

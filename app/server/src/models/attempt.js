@@ -23,6 +23,14 @@ var attemptSchema = new mongoose.Schema({
     type: String,
     enum: ['FAIL', 'MARGINAL', 'SATISFACTORY', 'GOOD', 'VERYGOOD', 'PERFECT']
   },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  submitted: {
+    type: Boolean,
+    default: false
+  }
 });
 var Attempt = mongoose.model('Attempt', attemptSchema);
 
