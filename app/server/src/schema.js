@@ -66,7 +66,7 @@ const typeDefs = gql`
         email: String!
         password: String!
         quizzesOwned: [Quiz]!
-        quizzesTaken: [Attempt]!
+        attemptsTaken: [Attempt]!
         shows: [Show]!
         showsToReview: [Show]!
         admin: Boolean!
@@ -92,6 +92,7 @@ const typeDefs = gql`
         removeShow(showId: ID!, userId: ID!): User
         createShow(name: String!, genre: String): Show
         deleteShow(showId: ID!): Show
+        deleteAllShows: [Show]
         startAttempt(quizId: ID!, userId: ID!): Attempt
         updateAttempt(attemptId: ID!, questionId: ID!, userAnswer: String!): Attempt
         submitAttempt(attemptId: ID!): Attempt
