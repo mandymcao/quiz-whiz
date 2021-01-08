@@ -13,14 +13,6 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  quizzesOwnedIds: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: []
-  },
-  attemptsTakenIds: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: []
-  },
   showIds: {
     type: [mongoose.Schema.Types.ObjectId],
     default: []
@@ -32,6 +24,10 @@ var userSchema = new mongoose.Schema({
   admin: {
     type: Boolean,
     default: false
+  },
+  token: {
+    type: String,
+    default: null
   }
 });
 var User = mongoose.model('User', userSchema);

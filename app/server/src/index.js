@@ -18,8 +18,13 @@ const startServer = async() => {
   const server = new ApolloServer({ 
     typeDefs, 
     resolvers,
-    context: {
-      Attempt, Question, Quiz, Show, User
+    context: async ({req}) => {
+      const auth = (req.headers && req.headers.authorization) || ''
+      const user = auth ? await User.findOne({token: auth}) : null
+
+      return {
+        Attempt, Question, Quiz, Show, User, user
+      }
     }
   });
 

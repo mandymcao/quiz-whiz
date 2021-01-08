@@ -8,13 +8,15 @@ const showTypeDefs = gql`
   }
 
   type Query {
-    show(id: ID!): Show
+    show(showId: ID!): Show
     shows(name: String, genre: String): [Show]!
   }
 
   type Mutation {
-    addShow(showId: ID!, userId: ID!): User
-    removeShow(showId: ID!, userId: ID!): User
+    addWatchedShow(showId: ID!): User
+    removeWatchedShow(showId: ID!): User
+    addShowToReview(showId: ID!): User
+    removeShowToReview(showId: ID!): User
     createShow(name: String!, genre: String): Show
     deleteShow(showId: ID!): Show
     deleteAllShows: [Show]

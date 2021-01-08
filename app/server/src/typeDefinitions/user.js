@@ -10,6 +10,7 @@ const userTypeDefs = gql`
     shows: [Show]!
     showsToReview: [Show]!
     admin: Boolean!
+    token: String
   }
 
   type Attempt {
@@ -44,7 +45,7 @@ const userTypeDefs = gql`
 
   type Mutation {
     login(email: String, password: String): User # String login token
-    startAttempt(quizId: ID!, userId: ID!): Attempt
+    startAttempt(quizId: ID!): Attempt
     updateAttempt(attemptId: ID!, questionId: ID!, userAnswer: String!): Attempt
     submitAttempt(attemptId: ID!): Attempt
   }

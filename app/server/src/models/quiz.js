@@ -11,10 +11,6 @@ var quizSchema = new mongoose.Schema({
   }, 
   showId: mongoose.Schema.Types.ObjectId,
   genre: String,
-  questionIds: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: []
-  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -22,6 +18,14 @@ var quizSchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
+  },
+  totalQuestions: {
+    type: Number,
+    default: 0
+  },
+  published: {
+    type: Boolean,
+    default: false
   }
 });
 var Quiz = mongoose.model('Quiz', quizSchema);

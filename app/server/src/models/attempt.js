@@ -14,14 +14,10 @@ var attemptSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-  quizId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
   score,
   message: {
     type: String,
-    enum: ['FAIL', 'MARGINAL', 'SATISFACTORY', 'GOOD', 'VERYGOOD', 'PERFECT']
+    enum: ['FAIL', 'MARGINAL', 'SATISFACTORY', 'GOOD', 'VERYGOOD', 'PERFECT', null]
   },
   createdAt: {
     type: Date,
